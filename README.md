@@ -33,6 +33,10 @@ Once configured, you (or your agent) can interact with documents through natural
 - **Docker Compose** - [Download from Docker](https://docs.docker.com/compose/). For running Nutrient Document Engine locally.
 - **Node.js 18+** - This MCP server runs via `npx`.
 
+### Licensing
+
+Nutrient Document Engine runs with an evaluation license by default. Please see [Removing Evaluation Limitations](#removing-evaluation-watermarks-and-limitations) section on how to remove the evaluation limitations.
+
 ### 1. Start Nutrient Document Engine
 Open a terminal window, then run:
 
@@ -107,7 +111,17 @@ This MCP server works with any AI platform that supports the Model Context Proto
 - [Features Reference](docs/features.md) - Detailed description of all document processing tools.
 - [Evaluation Framework](evaluation) - Testing and benchmarking tools.
 
-## Alternative Setup Options
+## Removing Evaluation Watermarks and Limitations
+
+Document Engine runs in evaluation mode with limitations by default. To remove them:
+
+1. **Contact Sales to purchase a license** from [Nutrient](https://www.nutrient.io/contact-sales)
+2. **Configure your license** by setting the `ACTIVATION_KEY` environment variable in your [Docker Compose configuration](docker-compose.yml) or Document Engine setup
+3. **Restart Document Engine** to apply the license
+
+For detailed licensing configuration, see the [Document Engine licensing guide](https://www.nutrient.io/guides/document-engine/about/licensing/).
+
+## Server Based Document Engine Setups
 
 **On-Premise Installation:** Follow the [Nutrient Document Engine installation guide](https://www.nutrient.io/getting-started/document-engine/).
 
