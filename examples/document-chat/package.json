@@ -1,0 +1,33 @@
+{
+  "name": "document-chat",
+  "author": "Your Name",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"turbo dev --filter=web\" \"turbo dev --filter=agents\"",
+    "build": "turbo build",
+    "turbo:command": "turbo",
+    "format": "turbo format",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.0",
+    "@tsconfig/recommended": "^1.0.8",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-no-instanceof": "^1.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.1",
+    "turbo": "latest",
+    "typescript": "^5"
+  },
+  "resolutions": {
+    "@langchain/core": "^0.3.42"
+  },
+  "packageManager": "pnpm@10.6.3"
+}

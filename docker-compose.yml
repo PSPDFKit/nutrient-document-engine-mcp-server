@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: nutrient
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: nutrient
+      POSTGRES_INITDB_ARGS: --data-checksums
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  document-engine:
+    image: pspdfkit/document-engine:latest
+    environment:
+      ACTIVATION_KEY: ${DOCUMENT_ENGINE_ACTIVATION_KEY:-}
+      API_AUTH_TOKEN: secret
+      PGUSER: nutrient
+      PGPASSWORD: password
+      PGDATABASE: nutrient
+      PGHOST: db
+      PGPORT: 5432
+      PORT: 5000
+    depends_on:
+      - db
+    ports:
+      - 5000:5000
+
+volumes:
+  pgdata:

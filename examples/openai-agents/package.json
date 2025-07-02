@@ -1,0 +1,32 @@
+{
+  "name": "openai-agents-document-engine-examples",
+  "version": "1.0.0",
+  "description": "OpenAI Agents SDK examples using Document Engine MCP for PDF processing workflows",
+  "type": "module",
+  "scripts": {
+    "install": "pnpm install",
+    "document-assembler": "node document-assembler.js",
+    "document-processor": "node document-processor.js",
+    "form-processor": "node form-processor.js",
+    "report-generator": "node report-generator.js",
+    "contract-processor": "node contract-processor.js",
+    "data-extraction": "node data-extraction-showcase.js"
+  },
+  "keywords": [
+    "document",
+    "processing",
+    "openai-agents",
+    "mcp",
+    "document-engine",
+    "pdf",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@openai/agents": "^0.0.10",
+    "dotenv": "^16.5.0",
+    "mime-types": "^3.0.1",
+    "zod": "^3.25.67"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "langgraphjs-document-engine-examples",
+  "version": "1.0.0",
+  "description": "LangChain.js examples using Document Engine MCP for PDF processing workflows",
+  "type": "module",
+  "scripts": {
+    "install": "pnpm install",
+    "document-assembler": "node document-assembler.js",
+    "document-processor": "node document-processor.js",
+    "form-processor": "node form-processor.js",
+    "report-generator": "node report-generator.js",
+    "contract-processor": "node contract-processor.js"
+  },
+  "keywords": [
+    "document",
+    "processing",
+    "langchain",
+    "langgraph",
+    "mcp",
+    "document-engine",
+    "pdf",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@langchain/core": "^0.3.59",
+    "@langchain/langgraph": "^0.3.4",
+    "@langchain/mcp-adapters": "^0.5.2",
+    "@langchain/openai": "^0.5.13",
+    "dotenv": "^16.5.0",
+    "mime-types": "^3.0.1",
+    "zod": "^3.25.67"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "name": "procurement-agent-typescript",
+  "version": "1.0.0",
+  "description": "AI-powered procurement document processing system using LangGraph.js and Document Engine MCP Server",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/index.ts",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
+  },
+  "keywords": [
+    "procurement",
+    "document-processing",
+    "ai-agent",
+    "langchain",
+    "langgraph",
+    "mcp",
+    "document-engine",
+    "pdf",
+    "automation",
+    "typescript",
+    "react-agent"
+  ],
+  "author": "Document Engine MCP Examples",
+  "license": "MIT",
+  "dependencies": {
+    "@langchain/core": "^0.3.61",
+    "@langchain/langgraph": "^0.3.5",
+    "@langchain/mcp-adapters": "^0.5.2",
+    "@langchain/openai": "^0.5.16",
+    "dotenv": "^17.0.0",
+    "glob": "^11.0.0",
+    "mime-types": "^3.0.1",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/mime-types": "^3.0.1",
+    "@types/node": "^24.0.8",
+    "@types/pdfkit": "^0.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.35.1",
+    "@typescript-eslint/parser": "^8.35.1",
+    "eslint": "^9.30.0",
+    "globals": "^16.3.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

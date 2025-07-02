@@ -1,0 +1,8 @@
+{
+  "node_version": "20",
+  "dependencies": ["."],
+  "graphs": {
+    "agent": "./apps/agents/src/react-agent/graph.ts:graph"
+  },
+  "env": ".env"
+}
