@@ -34,7 +34,8 @@ Once configured, you (or your agent) can interact with documents through natural
 - **Node.js 18+** - This MCP server runs via `npx`.
 
 ### Licensing
-Nutrient Document Engine runs with an evaluation license by default, which includes watermarks on processed documents. For production use or to remove watermarks, you'll need a commercial license. [Learn more about licensing](https://www.nutrient.io/pricing/).
+
+Nutrient Document Engine runs with an evaluation license by default. Please see [Removing Evaluation Limitations](#removing-evaluation-watermarks-and-limitations) section on how to remove the evaluation limitations.
 
 ### 1. Start Nutrient Document Engine
 Open a terminal window, then run:
