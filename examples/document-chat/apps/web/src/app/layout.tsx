@@ -11,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Agent Inbox",
-  description: "Agent Inbox UX by LangChain",
+  title: "Nutrient Chat",
+  description: "Document Chat powered by Nutrient Document Engine",
 };
 
 export default function RootLayout({

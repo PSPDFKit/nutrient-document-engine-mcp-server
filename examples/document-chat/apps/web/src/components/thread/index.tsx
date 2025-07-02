@@ -12,7 +12,7 @@ import {
   DO_NOT_RENDER_ID_PREFIX,
   ensureToolCallsHaveResponses,
 } from "@/lib/ensure-tool-responses";
-import { LangGraphLogoSVG } from "../icons/langgraph";
+import { NutrientLogoWithTitleSVG } from "../icons/nutrient-logo-with-title";
 import { TooltipIconButton } from "./tooltip-icon-button";
 import {
   ArrowDown,
@@ -35,6 +35,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { NutrientLogoSVG } from "@/components/icons/nutrient-logo";
 
 function StickyToBottomContent(props: {
   content: ReactNode;
@@ -80,7 +81,7 @@ function OpenGitHubRepo() {
       <Tooltip>
         <TooltipTrigger asChild>
           <a
-            href="https://github.com/langchain-ai/agent-chat-ui"
+            href="https://github.com/PSPDFKit/nutrient-document-engine-mcp-server"
             target="_blank"
             className="flex items-center justify-center"
           >
@@ -88,7 +89,7 @@ function OpenGitHubRepo() {
           </a>
         </TooltipTrigger>
         <TooltipContent side="left">
-          <p>Open GitHub repo</p>
+          <p>Open Document Engine MCP Server repo</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -299,10 +300,7 @@ export function Thread() {
                   damping: 30,
                 }}
               >
-                <LangGraphLogoSVG width={32} height={32} />
-                <span className="text-xl font-semibold tracking-tight">
-                  Agent Chat
-                </span>
+                <NutrientLogoSVG width={64} height={64} />
               </motion.button>
             </div>
 
@@ -372,10 +370,7 @@ export function Thread() {
               <div className="sticky flex flex-col items-center gap-8 bottom-0 bg-white">
                 {!chatStarted && (
                   <div className="flex gap-3 items-center">
-                    <LangGraphLogoSVG className="flex-shrink-0 h-8" />
-                    <h1 className="text-2xl font-semibold tracking-tight">
-                      Agent Chat
-                    </h1>
+                    <NutrientLogoWithTitleSVG className="flex-shrink-0 h-8" />
                   </div>
                 )}
 
