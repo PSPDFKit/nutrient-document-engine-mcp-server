@@ -40,6 +40,7 @@ import {
   MergeDocumentPagesSchema,
 } from './tools/document-editing/mergeDocumentPages.js';
 import { rotatePages, RotatePagesSchema } from './tools/document-editing/rotatePages.js';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 
 export type MCPToolOutput = {
   markdown: string;
@@ -51,6 +52,7 @@ export type MCPToolOutput = {
 };
 
 type MCPToolCallback = (
+  server: McpServer,
   client: DocumentEngineClient,
   args: Record<string, unknown>,
   extra: RequestHandlerExtra<ServerRequest, ServerNotification>
@@ -72,6 +74,7 @@ async function withLogging<T, R>(
   toolName: string,
   extras: RequestHandlerExtra<ServerRequest, ServerNotification>,
   toolFn: (client: DocumentEngineClient, params: T) => Promise<R>,
+  server: McpServer,
   client: DocumentEngineClient,
   params: T
 ): Promise<R> {
@@ -79,15 +82,15 @@ async function withLogging<T, R>(
   if (extras.sessionId) messagePrefix += `[s=${extras.sessionId}]`;
   if (extras.requestId) messagePrefix += `[r=${extras.requestId}]`;
 
-  logger.info(`${messagePrefix} START`, params);
+  logger.info(server, `${messagePrefix} START`, params);
 
   try {
     const result = await toolFn(client, params);
-    logger.debug(`${messagePrefix} END`, result);
-    logger.info(`${messagePrefix} END`);
+    logger.debug(server, `${messagePrefix} END`, result);
+    logger.info(server, `${messagePrefix} END`);
     return result;
   } catch (error) {
-    logger.error(`${messagePrefix} END`, {
+    logger.error(server, `${messagePrefix} END`, {
       error: error instanceof Error ? error.message : String(error),
     });
     throw error;
@@ -100,8 +103,8 @@ async function withLogging<T, R>(
 function createToolHandler<TParams>(
   toolFn: (client: DocumentEngineClient, params: TParams) => Promise<MCPToolOutput>
 ): (toolName: string) => MCPToolCallback {
-  return (toolName: string) => async (client, params, extras) => {
-    const result = await withLogging(toolName, extras, toolFn, client, params as TParams);
+  return (toolName: string) => async (server, client, params, extras) => {
+    const result = await withLogging(toolName, extras, toolFn, server, client, params as TParams);
 
     // Create the content array with the markdown text
     const textContent = {

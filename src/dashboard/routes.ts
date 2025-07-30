@@ -52,7 +52,7 @@ export async function dashboardHandler(client: DocumentEngineClient, req: Reques
     // Render HTML dashboard
     res.send(dashboardTemplate(documents, formatFileSize, message));
   } catch (error) {
-    logger.error('Dashboard error', { error });
+    logger.error(null, 'Dashboard error', { error });
     res
       .status(500)
       .send(
@@ -128,7 +128,7 @@ export async function uploadHandler(client: DocumentEngineClient, req: Request, 
     // Render upload results
     res.send(uploadResultsTemplate(templateResults));
   } catch (error) {
-    logger.error('File upload error', { error });
+    logger.error(null, 'File upload error', { error });
     res
       .status(500)
       .send(
@@ -173,7 +173,7 @@ export async function downloadHandler(client: DocumentEngineClient, req: Request
 
     res.send(Buffer.from(response.data));
   } catch (error) {
-    logger.error('Document download error', { error });
+    logger.error(null, 'Document download error', { error });
     res
       .status(500)
       .send(
@@ -201,7 +201,7 @@ export async function deleteHandler(client: DocumentEngineClient, req: Request, 
     // Redirect back to dashboard with success message
     res.redirect('/dashboard?message=Document+deleted+successfully');
   } catch (error) {
-    logger.error('Document delete error', { error });
+    logger.error(null, 'Document delete error', { error });
     res
       .status(500)
       .send(

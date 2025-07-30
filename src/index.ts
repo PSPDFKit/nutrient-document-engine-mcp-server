@@ -23,7 +23,10 @@ if (process.env.NODE_ENV !== 'test') {
   try {
     validateEnvironment();
   } catch (error) {
-    console.error('Environment validation failed:', error instanceof Error ? error.message : error);
+    logger.error(
+      null,
+      `Environment validation failed: ${error instanceof Error ? error.message : error}`
+    );
     process.exit(1);
   }
 }
@@ -41,6 +44,7 @@ async function waitForDocumentEngine(): Promise<DocumentEngineClient> {
   while (attempts < maxRetries) {
     try {
       logger.info(
+        null,
         `Attempting to connect to Document Engine (attempt ${attempts + 1}/${maxRetries})`
       );
       const client = await getDocumentEngineClient();
@@ -48,7 +52,7 @@ async function waitForDocumentEngine(): Promise<DocumentEngineClient> {
       // Test the connection with a health check
       await client.get('/healthcheck');
 
-      logger.info('Document Engine is ready! Connection established successfully.');
+      logger.info(null, 'Document Engine is ready! Connection established successfully.');
       return client;
     } catch (error) {
       attempts++;
@@ -56,6 +60,7 @@ async function waitForDocumentEngine(): Promise<DocumentEngineClient> {
 
       if (attempts >= maxRetries) {
         logger.error(
+          null,
           `Failed to connect to Document Engine after ${maxRetries} attempts. Last error: ${errorMessage}`
         );
         throw new Error(
@@ -63,7 +68,8 @@ async function waitForDocumentEngine(): Promise<DocumentEngineClient> {
         );
       }
 
-      logger.warn(
+      logger.warning(
+        null,
         `Document Engine not ready yet (attempt ${attempts}/${maxRetries}): ${errorMessage}. Retrying in ${retryDelay}ms...`
       );
       await new Promise(resolve => setTimeout(resolve, retryDelay));
@@ -97,7 +103,7 @@ function createMCPServer(): McpServer {
 
 function configureMCPServerTools(server: McpServer): void {
   for (const tool of mcpToolsToRegister) {
-    server.tool(tool.name, tool.schema, (args, extra) => tool.handler(client, args, extra));
+    server.tool(tool.name, tool.schema, (args, extra) => tool.handler(server, client, args, extra));
   }
 }
 
@@ -127,7 +133,7 @@ function createExpressApp(enableDashboard: boolean = false): express.Application
         });
       }
     } catch (error) {
-      logger.error('Health check endpoint error', { error });
+      logger.error(null, 'Health check endpoint error', { error });
       res.status(500).json({
         status: 'error',
         message: error instanceof Error ? error.message : 'Unknown error',
@@ -153,7 +159,10 @@ async function startStdioServer() {
 
     // Start HTTP server for dashboard
     app.listen(env.PORT, env.MCP_HOST, () => {
-      logger.info(`Dashboard server running on HTTP at ${env.MCP_HOST}:${env.PORT}/dashboard`);
+      logger.info(
+        null,
+        `Dashboard server running on HTTP at ${env.MCP_HOST}:${env.PORT}/dashboard`
+      );
     });
   }
 
@@ -168,8 +177,7 @@ async function startStdioServer() {
   });
 
   await server.connect(transport);
-  logger.setMCPServer(server);
-  logger.info(`Nutrient Document Engine MCP server ${getVersion()} running on stdio`);
+  logger.info(null, `Nutrient Document Engine MCP server ${getVersion()} running on stdio`);
 }
 
 async function startHttpServer() {
@@ -204,12 +212,14 @@ async function startHttpServer() {
         transport.onclose = () => {
           if (transport.sessionId) {
             delete transports[transport.sessionId];
+            logger.info(null, `Close Session : ${transport.sessionId}`);
           }
         };
 
         const server = createMCPServer();
         await server.connect(transport);
-        logger.setMCPServer(server);
+
+        logger.info(null, `Open Session : ${transport.sessionId}`);
       } else {
         // Invalid request
         res.status(400).json({
@@ -226,7 +236,7 @@ async function startHttpServer() {
       // Handle the request
       await transport.handleRequest(req, res, req.body);
     } catch (error) {
-      logger.error('Error handling MCP request:', error);
+      logger.error(null, 'Error handling MCP request:', error);
       if (!res.headersSent) {
         res.status(500).json({
           jsonrpc: '2.0',
@@ -265,10 +275,14 @@ async function startHttpServer() {
 
   app.listen(env.PORT, env.MCP_HOST, () => {
     logger.info(
+      null,
       `Nutrient Document Engine MCP server ${getVersion()} running on HTTP at ${env.MCP_HOST}:${env.PORT}/mcp`
     );
     if (dashboardEnabled) {
-      logger.info(`Dashboard server running on HTTP at ${env.MCP_HOST}:${env.PORT}/dashboard`);
+      logger.info(
+        null,
+        `Dashboard server running on HTTP at ${env.MCP_HOST}:${env.PORT}/dashboard`
+      );
     }
   });
 }
@@ -284,6 +298,6 @@ async function main() {
 }
 
 main().catch(error => {
-  logger.error('Failed to start server', { error: error.message, stack: error.stack });
+  logger.error(null, 'Failed to start server', { error: error.message, stack: error.stack });
   process.exit(1);
 });

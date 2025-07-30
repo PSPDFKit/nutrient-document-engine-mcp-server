@@ -34,7 +34,7 @@ describe('Environment Validation', () => {
         MAX_RETRIES: 3,
         RETRY_DELAY: 1000,
         MAX_CONNECTIONS: 100,
-        LOG_LEVEL: 'INFO',
+        LOG_LEVEL: 'info',
         MCP_TRANSPORT: 'stdio',
         PORT: 5100,
         MCP_HOST: 'localhost',
@@ -51,7 +51,7 @@ describe('Environment Validation', () => {
         MAX_RETRIES: '5',
         RETRY_DELAY: '2000',
         MAX_CONNECTIONS: '200',
-        LOG_LEVEL: 'DEBUG',
+        LOG_LEVEL: 'debug',
       };
 
       const result = validateEnvironment();
@@ -65,7 +65,7 @@ describe('Environment Validation', () => {
         MAX_RETRIES: 5,
         RETRY_DELAY: 2000,
         MAX_CONNECTIONS: 200,
-        LOG_LEVEL: 'DEBUG',
+        LOG_LEVEL: 'debug',
         MCP_TRANSPORT: 'stdio',
         PORT: 5100,
         MCP_HOST: 'localhost',
@@ -116,14 +116,23 @@ describe('Environment Validation', () => {
       process.env = {
         DOCUMENT_ENGINE_BASE_URL: 'https://api.example.com',
         DOCUMENT_ENGINE_API_AUTH_TOKEN: 'test-token-123',
-        LOG_LEVEL: 'INVALID_LEVEL',
+        LOG_LEVEL: 'invalid_level',
       };
 
       expect(() => validateEnvironment()).toThrow('Invalid enum value');
     });
 
     it('should accept all valid log levels', () => {
-      const validLevels = ['ERROR', 'WARN', 'WARNING', 'INFO', 'DEBUG'];
+      const validLevels = [
+        'debug',
+        'info',
+        'notice',
+        'warning',
+        'error',
+        'critical',
+        'alert',
+        'emergency',
+      ];
 
       for (const level of validLevels) {
         process.env = {

@@ -13,18 +13,18 @@ This guide covers configuration options, environment variables, transport modes,
 
 ### Optional Configuration
 
-| Variable             | Description                                                               | Default                         | Example    |
-|----------------------|---------------------------------------------------------------------------|---------------------------------|------------|
-| `MCP_TRANSPORT`      | Transport type - "stdio" or "http"                                        | `stdio`                         | `http`     |
-| `MCP_HOST`           | The host as IP address for the Dashboard and the MCP server and Dashboard | `localhost`                     | `0.0.0.0`  |
-| `PORT`               | HTTP server port (HTTP transport only)                                    | `5100`                          | `8080`     |
-| `MAX_RETRIES`        | Number of API request retries                                             | `3`                             | `5`        |
-| `CONNECTION_TIMEOUT` | Request timeout in milliseconds                                           | `30000`                         | `60000`    |
-| `RETRY_DELAY`        | Delay between retries in milliseconds                                     | `1000`                          | `2000`     |
-| `MAX_CONNECTIONS`    | Maximum concurrent connections                                            | `100`                           | `200`      |
-| `LOG_LEVEL`          | Logging level                                                             | `INFO`                          | `DEBUG`    |
-| `DASHBOARD_USERNAME` | Dashboard authentication username (required to enable dashboard)          | `undefined`                     | `admin`    |
-| `DASHBOARD_PASSWORD` | Dashboard authentication password (required to enable dashboard)          | `undefined`                     | `password` |
+| Variable             | Description                                                                                     | Default     | Example    |
+|----------------------|-------------------------------------------------------------------------------------------------|-------------|------------|
+| `MCP_TRANSPORT`      | Transport type - "stdio" or "http"                                                              | `stdio`     | `http`     |
+| `MCP_HOST`           | The host as IP address for the Dashboard and the MCP server and Dashboard                       | `localhost` | `0.0.0.0`  |
+| `PORT`               | HTTP server port (HTTP transport only)                                                          | `5100`      | `8080`     |
+| `MAX_RETRIES`        | Number of API request retries                                                                   | `3`         | `5`        |
+| `CONNECTION_TIMEOUT` | Request timeout in milliseconds                                                                 | `30000`     | `60000`    |
+| `RETRY_DELAY`        | Delay between retries in milliseconds                                                           | `1000`      | `2000`     |
+| `MAX_CONNECTIONS`    | Maximum concurrent connections                                                                  | `100`       | `200`      |
+| `LOG_LEVEL`          | Logging level ("debug", "info", "notice", "warning", "error", "critical", "alert", "emergency") | `info`      | `error`    |
+| `DASHBOARD_USERNAME` | Dashboard authentication username (required to enable dashboard)                                | `undefined` | `admin`    |
+| `DASHBOARD_PASSWORD` | Dashboard authentication password (required to enable dashboard)                                | `undefined` | `password` |
 
 > MCP_HOST information
 >  Setting host to `127.0.0.1` (localhost) ensure that the Dashboard and the MCP server is only accessible locally 
@@ -275,5 +275,5 @@ echo $DOCUMENT_ENGINE_API_AUTH_TOKEN
 
 ### Debug Logging
 ```bash
-LOG_LEVEL=DEBUG npx @nutrient-sdk/document-engine-mcp-server
+LOG_LEVEL=debug npx @nutrient-sdk/document-engine-mcp-server
 ```

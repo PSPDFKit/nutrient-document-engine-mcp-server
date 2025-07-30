@@ -17,7 +17,9 @@ const environmentSchema = z.object({
   MAX_RETRIES: z.coerce.number().int().min(0).default(3),
   RETRY_DELAY: z.coerce.number().int().min(0).default(1000),
   MAX_CONNECTIONS: z.coerce.number().int().positive().default(100),
-  LOG_LEVEL: z.enum(['ERROR', 'WARN', 'WARNING', 'INFO', 'DEBUG']).default('INFO'),
+  LOG_LEVEL: z
+    .enum(['debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'])
+    .default('info'),
 
   // MCP Transport configuration
   MCP_TRANSPORT: z.enum(['stdio', 'http']).default('stdio'),
