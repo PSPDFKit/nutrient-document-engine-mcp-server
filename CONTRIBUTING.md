@@ -46,7 +46,7 @@ We welcome contributions to the Nutrient Document Engine MCP Server! This docume
 
    # Optional configuration
    MCP_TRANSPORT=stdio
-   LOG_LEVEL=INFO
+   LOG_LEVEL=info
    ```
 
 ### Starting Document Engine

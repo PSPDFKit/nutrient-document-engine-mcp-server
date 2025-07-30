@@ -69,7 +69,7 @@ export async function createDocumentEngineClient(config: ClientConfig): Promise<
 function setupInterceptors(client: Client): void {
   client.interceptors.request.use(
     config => {
-      logger.request(config.method || 'unknown', config.url || 'unknown', {
+      logger.request(null, config.method || 'unknown', config.url || 'unknown', {
         params: config.params,
         body: config.data,
       });
@@ -82,7 +82,7 @@ function setupInterceptors(client: Client): void {
 
   client.interceptors.response.use(
     response => {
-      logger.response(response.status, response.config?.url || 'unknown', {
+      logger.response(null, response.status, response.config?.url || 'unknown', {
         data: response.data,
       });
       return response;
@@ -93,7 +93,7 @@ function setupInterceptors(client: Client): void {
         const method = error.config?.method?.toUpperCase();
         const url = error.config?.url || 'unknown';
 
-        logger.error('API Request Failed', {
+        logger.error(null, 'API Request Failed', {
           method,
           url,
           status,
@@ -101,7 +101,7 @@ function setupInterceptors(client: Client): void {
           code: error.code,
         });
       } else {
-        logger.error('Non-Axios Error in Response Interceptor', {
+        logger.error(null, 'Non-Axios Error in Response Interceptor', {
           message: error instanceof Error ? error.message : String(error),
         });
       }
@@ -139,7 +139,7 @@ function addRetryFunctionality(client: Client, maxRetries: number, retryDelay: n
             const currentAttempt = retryCount + 1;
             const delay = calculateDelay(retryDelay, retryCount);
 
-            logger.retry(currentAttempt, maxRetries, delay);
+            logger.retry(null, currentAttempt, maxRetries, delay);
             await new Promise(resolve => setTimeout(resolve, delay));
             return attempt(retryCount + 1);
           }

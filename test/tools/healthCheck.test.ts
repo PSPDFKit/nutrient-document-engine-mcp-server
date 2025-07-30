@@ -46,7 +46,7 @@ describe('healthCheck', () => {
       MAX_RETRIES: 3,
       RETRY_DELAY: 1000,
       MAX_CONNECTIONS: 100,
-      LOG_LEVEL: 'INFO',
+      LOG_LEVEL: 'info',
       MCP_TRANSPORT: 'stdio',
       PORT: 5100,
       MCP_HOST: 'localhost',
@@ -98,7 +98,7 @@ describe('healthCheck', () => {
       expect(result.markdown).toContain('- **Max Retries**: 3');
       expect(result.markdown).toContain('- **Retry Delay**: 1000ms');
       expect(result.markdown).toContain('- **Max Connections**: 100');
-      expect(result.markdown).toContain('- **Log Level**: INFO');
+      expect(result.markdown).toContain('- **Log Level**: info');
       expect(result.markdown).toContain('- **MCP Transport**: stdio');
     });
 
@@ -113,7 +113,7 @@ describe('healthCheck', () => {
         MAX_RETRIES: 3,
         RETRY_DELAY: 1000,
         MAX_CONNECTIONS: 100,
-        LOG_LEVEL: 'INFO',
+        LOG_LEVEL: 'info',
         MCP_TRANSPORT: 'http',
         PORT: 5100,
         MCP_HOST: 'localhost',
@@ -190,7 +190,7 @@ describe('healthCheck', () => {
         MAX_RETRIES: 3,
         RETRY_DELAY: 1000,
         MAX_CONNECTIONS: 100,
-        LOG_LEVEL: 'INFO',
+        LOG_LEVEL: 'info',
         MCP_TRANSPORT: 'stdio',
         PORT: 5100,
         MCP_HOST: 'localhost',
@@ -211,7 +211,7 @@ describe('healthCheck', () => {
         MAX_RETRIES: 3,
         RETRY_DELAY: 1000,
         MAX_CONNECTIONS: 100,
-        LOG_LEVEL: 'INFO',
+        LOG_LEVEL: 'info',
         MCP_TRANSPORT: 'stdio',
         PORT: 5100,
         MCP_HOST: 'localhost',
