@@ -14,16 +14,17 @@ vi.mock('../../../src/utils/Logger.js', () => ({
 
 describe('addAnnotation', () => {
   let mockClient: MockedDocumentEngineClient;
-  const mockDate = new Date('2023-01-01T12:00:00Z');
 
   beforeEach(() => {
     mockClient = createMockClient();
 
-    // Mock Date.now() to return a consistent date for testing
-    vi.spyOn(global, 'Date').mockImplementation(() => mockDate as unknown as Date);
+    // Use Vitest's fake timers for consistent date testing
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2023-01-01T12:00:00Z'));
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.restoreAllMocks();
   });
 
