@@ -4,9 +4,11 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
+import { hostHeaderValidation } from '@modelcontextprotocol/sdk/server/middleware/hostHeaderValidation.js';
 import dotenv from 'dotenv';
 import express from 'express';
 import { randomUUID } from 'node:crypto';
+import { isIP } from 'node:net';
 import { getEnvironment, validateEnvironment } from './utils/Environment.js';
 import { getDocumentEngineClient } from './api/ClientFactory.js';
 import { logger } from './utils/Logger.js';
@@ -110,6 +112,21 @@ function configureMCPServerTools(server: McpServer): void {
 function createExpressApp(enableDashboard: boolean = false): express.Application {
   const app = express();
   app.use(express.json());
+
+  const env = getEnvironment();
+  const normalizeHostForHeader = (host: string): string => {
+    const trimmedHost = host.trim();
+    if (trimmedHost.startsWith('[') && trimmedHost.endsWith(']')) {
+      return trimmedHost;
+    }
+    return isIP(trimmedHost) === 6 ? `[${trimmedHost}]` : trimmedHost;
+  };
+  const loopbackHosts = ['localhost', '127.0.0.1', '[::1]'];
+  const normalizedHost = normalizeHostForHeader(env.MCP_HOST);
+  const allowList = loopbackHosts.includes(normalizedHost) ? loopbackHosts : [normalizedHost];
+  if (env.MCP_HOST !== '0.0.0.0' && env.MCP_HOST !== '::') {
+    app.use(hostHeaderValidation(allowList));
+  }
 
   // Health check endpoint
   app.get('/health', async (req, res) => {
