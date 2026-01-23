@@ -29,6 +29,8 @@ This guide covers configuration options, environment variables, transport modes,
 > MCP_HOST information
 >  Setting host to `127.0.0.1` (localhost) ensure that the Dashboard and the MCP server is only accessible locally 
 >  Setting host to `0.0.0.0` make it so that the Dashboard and the MCP server is accessible from any IP address assigned to the machine
+>
+> Note: Host header validation (DNS rebinding protection) is only applied when `MCP_HOST` is a specific host (for example `localhost`, `127.0.0.1`, or `::1`). When binding to all interfaces (`0.0.0.0` or `::`), host validation is not applied; use other protections (auth, firewall, reverse proxy) if exposing the server.
 
 ## Transport Modes
 
