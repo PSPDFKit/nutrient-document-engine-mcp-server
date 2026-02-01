@@ -14,8 +14,17 @@
   },
   "keywords": [
     "mcp",
+    "mcp-server",
     "nutrient",
-    "document-engine"
+    "document-engine",
+    "pdf",
+    "document-processing",
+    "ai",
+    "agent",
+    "redaction",
+    "forms",
+    "annotations",
+    "model-context-protocol"
   ],
   "engines": {
     "node": ">=18.0.0",
