@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { rotatePages } from '../../../src/tools/document-editing/rotatePages.js';
-import { createMockClient, MockedDocumentEngineClient } from 'test/utils/mockTypes.js';
+import { createMockClient, MockedDocumentEngineClient } from '../../utils/mockTypes.js';
 
 // Mock the logger to prevent console output during tests
 vi.mock('../../../src/utils/Logger.js', () => ({

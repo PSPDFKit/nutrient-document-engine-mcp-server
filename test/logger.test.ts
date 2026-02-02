@@ -1,15 +1,15 @@
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import { Logger } from '../src/utils/Logger.js';
 
-// Mock the MCP server
+// Mock the MCP server with a proper class implementation for Vitest 4.x
 vi.mock('@modelcontextprotocol/sdk/server/mcp.js', () => {
   return {
-    McpServer: vi.fn().mockImplementation(() => ({
-      isConnected: vi.fn(),
-      server: {
+    McpServer: class MockMcpServer {
+      isConnected = vi.fn();
+      server = {
         sendLoggingMessage: vi.fn(),
-      },
-    })),
+      };
+    },
   };
 });
 
@@ -173,10 +173,6 @@ describe('Logger', () => {
       mockMcpServer = new McpServer({
         name: 'mock-nutrient-document-engine-mcp',
         version: '0.0.1',
-        capabilities: {
-          tools: {},
-          logging: {},
-        },
       }) as MockedMcpServer;
       mockMcpServer.server.sendLoggingMessage.mockResolvedValue(undefined);
     });

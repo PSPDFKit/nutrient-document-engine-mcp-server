@@ -144,7 +144,8 @@ export async function uploadHandler(client: DocumentEngineClient, req: Request, 
  */
 export async function downloadHandler(client: DocumentEngineClient, req: Request, res: Response) {
   try {
-    const documentId = req.params.id;
+    const paramId = req.params.id;
+    const documentId = Array.isArray(paramId) ? paramId[0] : paramId;
 
     if (!documentId) {
       return res.status(400).send(errorTemplate('Document ID is required'));
@@ -189,7 +190,8 @@ export async function downloadHandler(client: DocumentEngineClient, req: Request
  */
 export async function deleteHandler(client: DocumentEngineClient, req: Request, res: Response) {
   try {
-    const documentId = req.params.id;
+    const paramId = req.params.id;
+    const documentId = Array.isArray(paramId) ? paramId[0] : paramId;
 
     if (!documentId) {
       return res.status(400).send(errorTemplate('Document ID is required'));

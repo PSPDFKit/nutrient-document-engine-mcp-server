@@ -7,15 +7,19 @@
  * 3. Keeping the main communication channel (stdout) clean for protocol messages
  */
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import {
-  LoggingMessageNotification,
-  LoggingMessageNotificationSchema,
-} from '@modelcontextprotocol/sdk/types.js';
-import { z } from 'zod';
+import { LoggingMessageNotification } from '@modelcontextprotocol/sdk/types.js';
 import { getEnvironment } from './Environment.js';
 
 // MCP standard logging levels
-type MCPLogLevel = z.infer<typeof LoggingMessageNotificationSchema.shape.params.shape.level>;
+type MCPLogLevel =
+  | 'debug'
+  | 'info'
+  | 'notice'
+  | 'warning'
+  | 'error'
+  | 'critical'
+  | 'alert'
+  | 'emergency';
 
 const LogLevel: Record<MCPLogLevel, number> = {
   debug: 0,
