@@ -1,0 +1,35 @@
+# Smithery configuration file
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - documentEngineBaseUrl
+      - documentEngineApiAuthToken
+    properties:
+      documentEngineBaseUrl:
+        type: string
+        default: http://localhost:5000
+        description: Base URL for the Nutrient Document Engine instance.
+      documentEngineApiAuthToken:
+        type: string
+        default: secret
+        description: API auth token for Nutrient Document Engine.
+      dashboardUsername:
+        type: string
+        description: Optional dashboard username.
+      dashboardPassword:
+        type: string
+        description: Optional dashboard password.
+  commandFunction: |-
+    (config) => ({
+      command: 'npx',
+      args: ['-y', '@nutrient-sdk/document-engine-mcp-server'],
+      env: {
+        DOCUMENT_ENGINE_BASE_URL: config.documentEngineBaseUrl,
+        DOCUMENT_ENGINE_API_AUTH_TOKEN: config.documentEngineApiAuthToken,
+        ...(config.dashboardUsername ? { DASHBOARD_USERNAME: config.dashboardUsername } : {}),
+        ...(config.dashboardPassword ? { DASHBOARD_PASSWORD: config.dashboardPassword } : {})
+      }
+    })
