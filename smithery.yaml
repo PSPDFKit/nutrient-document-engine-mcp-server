@@ -23,6 +23,12 @@ startCommand:
       mcpServerUrl:
         type: string
         description: Optional MCP callback/server URL
+      dashboardUsername:
+        type: string
+        description: Optional dashboard username
+      dashboardPassword:
+        type: string
+        description: Optional dashboard password
   commandFunction: |-
     (config) => ({
       command: 'node',
@@ -31,6 +37,8 @@ startCommand:
         DOCUMENT_ENGINE_BASE_URL: config.documentEngineBaseUrl,
         DOCUMENT_ENGINE_API_AUTH_TOKEN: config.documentEngineApiAuthToken,
         DOCUMENT_ENGINE_API_BASE_URL: config.documentEngineApiBaseUrl,
-        MCP_SERVER_URL: config.mcpServerUrl
+        MCP_SERVER_URL: config.mcpServerUrl,
+        ...(config.dashboardUsername ? { DASHBOARD_USERNAME: config.dashboardUsername } : {}),
+        ...(config.dashboardPassword ? { DASHBOARD_PASSWORD: config.dashboardPassword } : {})
       }
     })
