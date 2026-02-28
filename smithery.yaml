@@ -1,0 +1,36 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+build:
+  dockerBuildPath: .
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - documentEngineBaseUrl
+      - documentEngineApiAuthToken
+    properties:
+      documentEngineBaseUrl:
+        type: string
+        description: Base URL for Nutrient Document Engine (e.g. http://localhost:5000)
+      documentEngineApiAuthToken:
+        type: string
+        description: API auth token configured for Document Engine
+      documentEngineApiBaseUrl:
+        type: string
+        description: Optional override for API base URL
+      mcpServerUrl:
+        type: string
+        description: Optional MCP callback/server URL
+  commandFunction: |-
+    (config) => ({
+      command: 'node',
+      args: ['/app/dist/index.js'],
+      env: {
+        DOCUMENT_ENGINE_BASE_URL: config.documentEngineBaseUrl,
+        DOCUMENT_ENGINE_API_AUTH_TOKEN: config.documentEngineApiAuthToken,
+        DOCUMENT_ENGINE_API_BASE_URL: config.documentEngineApiBaseUrl,
+        MCP_SERVER_URL: config.mcpServerUrl
+      }
+    })
