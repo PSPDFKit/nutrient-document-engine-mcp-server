@@ -13,11 +13,10 @@ startCommand:
     properties:
       documentEngineBaseUrl:
         type: string
-        format: uri
-        pattern: '^https?://'
         description: Base URL for Nutrient Document Engine (e.g. http://localhost:5000)
       documentEngineApiAuthToken:
         type: string
+        writeOnly: true
         description: API auth token configured for Document Engine
       documentEngineApiBaseUrl:
         type: string
@@ -27,10 +26,16 @@ startCommand:
         description: Optional MCP callback/server URL
       dashboardUsername:
         type: string
-        description: Optional dashboard username
+        description: Optional dashboard username; must be provided together with dashboardPassword to enable the dashboard
       dashboardPassword:
         type: string
-        description: Optional dashboard password
+        writeOnly: true
+        description: Optional dashboard password; must be provided together with dashboardUsername to enable the dashboard
+    dependentRequired:
+      dashboardUsername:
+        - dashboardPassword
+      dashboardPassword:
+        - dashboardUsername
   commandFunction: |-
     (config) => ({
       command: 'node',
@@ -40,7 +45,11 @@ startCommand:
         DOCUMENT_ENGINE_API_AUTH_TOKEN: config.documentEngineApiAuthToken,
         DOCUMENT_ENGINE_API_BASE_URL: config.documentEngineApiBaseUrl,
         MCP_SERVER_URL: config.mcpServerUrl,
-        ...(config.dashboardUsername ? { DASHBOARD_USERNAME: config.dashboardUsername } : {}),
-        ...(config.dashboardPassword ? { DASHBOARD_PASSWORD: config.dashboardPassword } : {})
+        ...(config.dashboardUsername && config.dashboardPassword
+          ? {
+              DASHBOARD_USERNAME: config.dashboardUsername,
+              DASHBOARD_PASSWORD: config.dashboardPassword
+            }
+          : {})
       }
     })
