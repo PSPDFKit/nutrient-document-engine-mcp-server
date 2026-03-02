@@ -13,6 +13,8 @@ startCommand:
     properties:
       documentEngineBaseUrl:
         type: string
+        format: uri
+        pattern: '^https?://'
         description: Base URL for Nutrient Document Engine (e.g. http://localhost:5000)
       documentEngineApiAuthToken:
         type: string
