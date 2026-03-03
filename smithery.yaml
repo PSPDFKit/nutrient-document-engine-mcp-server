@@ -1,8 +1,5 @@
 # Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
 
-build:
-  dockerBuildPath: .
-
 startCommand:
   type: stdio
   configSchema:
@@ -16,21 +13,32 @@ startCommand:
         description: Base URL for Nutrient Document Engine (e.g. http://localhost:5000)
       documentEngineApiAuthToken:
         type: string
+        writeOnly: true
         description: API auth token configured for Document Engine
-      documentEngineApiBaseUrl:
+      dashboardUsername:
         type: string
-        description: Optional override for API base URL
-      mcpServerUrl:
+        description: Optional dashboard username; must be provided together with dashboardPassword to enable the dashboard
+      dashboardPassword:
         type: string
-        description: Optional MCP callback/server URL
+        writeOnly: true
+        description: Optional dashboard password; must be provided together with dashboardUsername to enable the dashboard
+    dependentRequired:
+      dashboardUsername:
+        - dashboardPassword
+      dashboardPassword:
+        - dashboardUsername
   commandFunction: |-
     (config) => ({
-      command: 'node',
-      args: ['/app/dist/index.js'],
+      command: 'npx',
+      args: ['-y', '@nutrient-sdk/document-engine-mcp-server'],
       env: {
         DOCUMENT_ENGINE_BASE_URL: config.documentEngineBaseUrl,
         DOCUMENT_ENGINE_API_AUTH_TOKEN: config.documentEngineApiAuthToken,
-        DOCUMENT_ENGINE_API_BASE_URL: config.documentEngineApiBaseUrl,
-        MCP_SERVER_URL: config.mcpServerUrl
+        ...(config.dashboardUsername && config.dashboardPassword
+          ? {
+              DASHBOARD_USERNAME: config.dashboardUsername,
+              DASHBOARD_PASSWORD: config.dashboardPassword
+            }
+          : {})
       }
     })
