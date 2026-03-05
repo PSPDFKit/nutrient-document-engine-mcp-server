@@ -8,6 +8,19 @@
 
 This MCP server exposes document processing capabilities through natural language, supporting both direct human interaction and AI agent tool calling.
 
+## Which MCP Server Should I Use?
+
+| Server | Best for | Deployment | Core capabilities |
+|---|---|---|---|
+| [Nutrient DWS MCP Server](https://github.com/PSPDFKit/nutrient-dws-mcp-server) | Cloud document workflows | Nutrient-hosted API (API key) | Convert, OCR, redact, sign, extract, watermark, automation |
+| [Nutrient Document Engine MCP Server](https://github.com/PSPDFKit/nutrient-document-engine-mcp-server) | Self-hosted document workflows | On-prem/private cloud | Document processing with deployment control and data residency |
+| [Nutrient PDF MCP Server](https://github.com/PSPDFKit/nutrient-pdf-mcp-server) | Low-level PDF inspection/debugging | Local Python runtime | Object-tree exploration, indirect-object resolution, structural analysis |
+
+You are in the **Document Engine MCP Server** repo. Choose this when you need self-hosted/on-prem document workflows and deployment control.
+
+- Ecosystem overview: [Nutrient AI Infrastructure](https://www.nutrient.io/ai/infrastructure/)
+- Product landing page: [Nutrient MCP Server](https://www.nutrient.io/mcp-server-pdf-automation-llm/)
+
 ## Example Conversations
 
 Once configured, you (or your agent) can interact with documents through natural language:
@@ -41,8 +54,8 @@ Nutrient Document Engine runs with an evaluation license by default. Please see 
 Open a terminal window, then run:
 
 ```bash
-git clone https://github.com/PSPDFKit/nutrient-document-engine-mcp.git
-cd nutrient-document-engine-mcp
+git clone https://github.com/PSPDFKit/nutrient-document-engine-mcp-server.git
+cd nutrient-document-engine-mcp-server
 docker-compose up -d
 ```
 
