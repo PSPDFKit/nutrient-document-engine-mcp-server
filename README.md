@@ -14,7 +14,6 @@ This MCP server exposes document processing capabilities through natural languag
 |---|---|---|---|
 | [Nutrient DWS MCP Server](https://github.com/PSPDFKit/nutrient-dws-mcp-server) | Cloud document workflows | Nutrient-hosted API (API key) | Convert, OCR, redact, sign, extract, watermark, automation |
 | [Nutrient Document Engine MCP Server](https://github.com/PSPDFKit/nutrient-document-engine-mcp-server) | Self-hosted document workflows | On-prem/private cloud | Document processing with deployment control and data residency |
-| [Nutrient PDF MCP Server](https://github.com/PSPDFKit/nutrient-pdf-mcp-server) | Low-level PDF inspection/debugging | Local Python runtime | Object-tree exploration, indirect-object resolution, structural analysis |
 
 You are in the **Document Engine MCP Server** repo. Choose this when you need self-hosted/on-prem document workflows and deployment control.
 
