@@ -24,6 +24,10 @@ Once configured, you (or your agent) can interact with documents through natural
 **You:** *"Split this 50-page contract into separate sections"*  
 **AI:** *"I've split the contract into 5 sections: Terms (pages 1-8), Payment (pages 9-15)..."*
 
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/pspdfkit-nutrient-document-engine-mcp-server).
+
 ## Setup with Claude Desktop
 
 ![Document Engine MCP Server + Claude Desktop](https://raw.githubusercontent.com/PSPDFKit/nutrient-document-engine-mcp-server/main/resources/claude-document-engine-mcp.gif?raw=true)
