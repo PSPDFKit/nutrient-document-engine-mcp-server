@@ -1,6 +1,7 @@
 {
   "name": "@nutrient-sdk/document-engine-mcp-server",
   "version": "0.0.1",
+  "mcpName": "io.github.PSPDFKit/nutrient-document-engine-mcp-server",
   "description": "MCP server for Nutrient Document Engine",
   "license": "MIT",
   "author": "Nutrient (https://www.nutrient.io)",
