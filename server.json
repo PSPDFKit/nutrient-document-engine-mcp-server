@@ -3,7 +3,7 @@
   "name": "io.github.PSPDFKit/nutrient-document-engine-mcp-server",
   "title": "Nutrient Document Engine MCP Server",
   "description": "Self-hosted MCP server for Nutrient Document Engine: on-premises document processing with natural-language control, designed for HIPAA, SOC 2, and GDPR compliance.",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "repository": {
     "url": "https://github.com/PSPDFKit/nutrient-document-engine-mcp-server",
     "source": "github"
@@ -12,8 +12,10 @@
     {
       "registryType": "npm",
       "identifier": "@nutrient-sdk/document-engine-mcp-server",
-      "version": "0.0.1",
-      "transport": { "type": "stdio" },
+      "version": "0.0.3",
+      "transport": {
+        "type": "stdio"
+      },
       "environmentVariables": [
         {
           "name": "DOCUMENT_ENGINE_BASE_URL",
@@ -27,6 +29,34 @@
           "description": "API auth token for your Document Engine instance.",
           "isRequired": true,
           "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "DASHBOARD_USERNAME",
+          "description": "Optional: enables the local status dashboard (Basic auth username).",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "DASHBOARD_PASSWORD",
+          "description": "Optional: local status dashboard password.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "description": "Optional log level (default info).",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "MCP_TRANSPORT",
+          "description": "Optional transport, stdio (default) or http; http binds loopback unless configured otherwise.",
+          "isRequired": false,
+          "isSecret": false,
           "format": "string"
         }
       ]
