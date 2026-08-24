@@ -16,7 +16,8 @@ This guide covers configuration options, environment variables, transport modes,
 | Variable             | Description                                                                                     | Default     | Example    |
 |----------------------|-------------------------------------------------------------------------------------------------|-------------|------------|
 | `MCP_TRANSPORT`      | Transport type - "stdio" or "http"                                                              | `stdio`     | `http`     |
-| `MCP_HOST`           | The host as IP address for the Dashboard and the MCP server and Dashboard                       | `localhost` | `0.0.0.0`  |
+| `MCP_HOST`           | Bind host for the Dashboard and HTTP MCP server                                                  | `127.0.0.1` | `0.0.0.0`  |
+| `MCP_HTTP_AUTH_TOKEN` | Bearer token for `/mcp`; required for non-loopback HTTP binding                                 | `undefined` | `your-secure-token-here` |
 | `PORT`               | HTTP server port (HTTP transport only)                                                          | `5100`      | `8080`     |
 | `MAX_RETRIES`        | Number of API request retries                                                                   | `3`         | `5`        |
 | `CONNECTION_TIMEOUT` | Request timeout in milliseconds                                                                 | `30000`     | `60000`    |
@@ -27,10 +28,12 @@ This guide covers configuration options, environment variables, transport modes,
 | `DASHBOARD_PASSWORD` | Dashboard authentication password (required to enable dashboard)                                | `undefined` | `password` |
 
 > MCP_HOST information
->  Setting host to `127.0.0.1` (localhost) ensure that the Dashboard and the MCP server is only accessible locally 
->  Setting host to `0.0.0.0` make it so that the Dashboard and the MCP server is accessible from any IP address assigned to the machine
+> Setting the host to `localhost`, an address in `127.0.0.0/8`, or `::1` keeps the server on a
+> loopback interface. Setting it to `0.0.0.0`, `::`, or another non-loopback host can make the
+> server accessible over the network. With `MCP_TRANSPORT=http`, any non-loopback host requires a
+> nonempty `MCP_HTTP_AUTH_TOKEN`; the server refuses to start without it.
 >
-> Note: Host header validation (DNS rebinding protection) is only applied when `MCP_HOST` is a specific host (for example `localhost`, `127.0.0.1`, or `::1`). When binding to all interfaces (`0.0.0.0` or `::`), host validation is not applied; use other protections (auth, firewall, reverse proxy) if exposing the server.
+> Note: Host header validation (DNS rebinding protection) is only applied when `MCP_HOST` is a specific host (for example `localhost`, `127.0.0.1`, or `::1`). When binding to all interfaces (`0.0.0.0` or `::`), host validation is not applied; use a firewall, TLS-terminating reverse proxy, and appropriate network controls in addition to the required bearer token.
 
 ## Transport Modes
 
@@ -77,6 +80,8 @@ MCP_TRANSPORT=http PORT=5100 npx @nutrient-sdk/document-engine-mcp-server
 
 **Characteristics:**
 - MCP communication via HTTP at `/mcp` endpoint.
+- Local-only bind to `127.0.0.1` by default.
+- Bearer authentication on `/mcp` whenever `MCP_HTTP_AUTH_TOKEN` is configured, and always for a non-loopback bind.
 - UUID-based session management.
 - Built-in dashboard at `/dashboard` when credentials are provided.
 - Health monitoring at `/health`.
@@ -87,9 +92,21 @@ MCP_TRANSPORT=http PORT=5100 npx @nutrient-sdk/document-engine-mcp-server
 # Basic HTTP setup
 MCP_TRANSPORT=http npx @nutrient-sdk/document-engine-mcp-server
 
-# Custom port and credentials
+# Custom port and dashboard credentials (still local-only)
 MCP_TRANSPORT=http PORT=8080 DASHBOARD_USERNAME=admin DASHBOARD_PASSWORD=secure npx @nutrient-sdk/document-engine-mcp-server
+
+# Network-accessible HTTP setup (MCP bearer token is required)
+MCP_TRANSPORT=http MCP_HOST=0.0.0.0 MCP_HTTP_AUTH_TOKEN=replace-with-a-secret npx @nutrient-sdk/document-engine-mcp-server
+
+# Every MCP request must present the configured token
+curl -H "Authorization: Bearer replace-with-a-secret" http://localhost:5100/mcp
 ```
+
+`MCP_HTTP_AUTH_TOKEN` protects POST, GET, and DELETE requests to `/mcp`. It does not protect
+`/health` or `/dashboard`; configure dashboard Basic authentication separately with
+`DASHBOARD_USERNAME` and `DASHBOARD_PASSWORD`. When the HTTP server uses a loopback host, the token
+is optional, but setting it still enables bearer authentication for `/mcp`. The stdio transport
+does not require this variable, even if `MCP_HOST` is non-loopback for an optional dashboard.
 
 ## Dashboard Interface
 

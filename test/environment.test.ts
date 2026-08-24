@@ -37,7 +37,8 @@ describe('Environment Validation', () => {
         LOG_LEVEL: 'info',
         MCP_TRANSPORT: 'stdio',
         PORT: 5100,
-        MCP_HOST: 'localhost',
+        MCP_HOST: '127.0.0.1',
+        MCP_HTTP_AUTH_TOKEN: undefined,
         DOCUMENT_ENGINE_POLL_MAX_RETRIES: 30,
         DOCUMENT_ENGINE_POLL_RETRY_DELAY: 2000,
       });
@@ -68,7 +69,8 @@ describe('Environment Validation', () => {
         LOG_LEVEL: 'debug',
         MCP_TRANSPORT: 'stdio',
         PORT: 5100,
-        MCP_HOST: 'localhost',
+        MCP_HOST: '127.0.0.1',
+        MCP_HTTP_AUTH_TOKEN: undefined,
         DOCUMENT_ENGINE_POLL_MAX_RETRIES: 30,
         DOCUMENT_ENGINE_POLL_RETRY_DELAY: 2000,
       });
@@ -82,6 +84,7 @@ describe('Environment Validation', () => {
       expect(result.DOCUMENT_ENGINE_BASE_URL).toBe('http://localhost:5000');
       expect(result.DOCUMENT_ENGINE_API_AUTH_TOKEN).toBe('secret');
       expect(result.PORT).toBe(5100);
+      expect(result.MCP_HOST).toBe('127.0.0.1');
     });
 
     it('should throw error for invalid URL', () => {
@@ -144,6 +147,34 @@ describe('Environment Validation', () => {
         const result = validateEnvironment();
         expect(result.LOG_LEVEL).toBe(level);
       }
+    });
+
+    it('should require MCP_HTTP_AUTH_TOKEN for non-loopback HTTP binding', () => {
+      process.env = {
+        MCP_TRANSPORT: 'http',
+        MCP_HOST: '0.0.0.0',
+      };
+
+      expect(() => validateEnvironment()).toThrow('MCP_HTTP_AUTH_TOKEN is required');
+    });
+
+    it('should allow non-loopback HTTP binding with MCP_HTTP_AUTH_TOKEN', () => {
+      process.env = {
+        MCP_TRANSPORT: 'http',
+        MCP_HOST: '0.0.0.0',
+        MCP_HTTP_AUTH_TOKEN: 'http-secret',
+      };
+
+      expect(validateEnvironment().MCP_HTTP_AUTH_TOKEN).toBe('http-secret');
+    });
+
+    it('should not require MCP_HTTP_AUTH_TOKEN for stdio transport', () => {
+      process.env = {
+        MCP_TRANSPORT: 'stdio',
+        MCP_HOST: '0.0.0.0',
+      };
+
+      expect(validateEnvironment().MCP_HTTP_AUTH_TOKEN).toBeUndefined();
     });
   });
 

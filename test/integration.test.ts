@@ -46,7 +46,7 @@ dotenv.config();
  *
  * Example .env:
  * DOCUMENT_ENGINE_BASE_URL=https://your-instance.nutrient.io
- * DOCUMENT_ENGINE_AUTH_TOKEN=your-auth-token
+ * DOCUMENT_ENGINE_API_AUTH_TOKEN=your-auth-token
  * availableDocumentId_ID=doc_123456789
  *
  * Run with: pnpm test:integration
@@ -54,14 +54,14 @@ dotenv.config();
 
 // Skip integration tests if environment variables are not set
 const skipIntegrationTests =
-  !process.env.DOCUMENT_ENGINE_BASE_URL || !process.env.DOCUMENT_ENGINE_AUTH_TOKEN;
+  !process.env.DOCUMENT_ENGINE_BASE_URL || !process.env.DOCUMENT_ENGINE_API_AUTH_TOKEN;
 
 // Set NODE_ENV to test to skip environment validation
 if (!skipIntegrationTests) {
   process.env.NODE_ENV = 'test';
 }
 
-describe('Integration Tests - Document Engine API', () => {
+describe.skipIf(skipIntegrationTests)('Integration Tests - Document Engine API', () => {
   let client: DocumentEngineClient;
   let availableDocumentId: string;
 
@@ -576,7 +576,7 @@ if (skipIntegrationTests) {
   console.log('');
   console.log('Option 2 - Using environment variables:');
   console.log('1. Set DOCUMENT_ENGINE_BASE_URL environment variable');
-  console.log('2. Set DOCUMENT_ENGINE_AUTH_TOKEN environment variable');
+  console.log('2. Set DOCUMENT_ENGINE_API_AUTH_TOKEN environment variable');
   console.log('3. Optionally set availableDocumentId_ID for a specific document');
   console.log('4. Run: pnpm test:integration');
 }

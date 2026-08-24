@@ -33,14 +33,14 @@ dotenv.config();
 
 // Skip integration tests if environment variables are not set
 const skipIntegrationTests =
-  !process.env.DOCUMENT_ENGINE_BASE_URL || !process.env.DOCUMENT_ENGINE_AUTH_TOKEN;
+  !process.env.DOCUMENT_ENGINE_BASE_URL || !process.env.DOCUMENT_ENGINE_API_AUTH_TOKEN;
 
 // Set NODE_ENV to test to skip environment validation
 if (!skipIntegrationTests) {
   process.env.NODE_ENV = 'test';
 }
 
-describe('Layer Integration Tests - Document Engine API', () => {
+describe.skipIf(skipIntegrationTests)('Layer Integration Tests - Document Engine API', () => {
   let client: DocumentEngineClient;
   let testDocumentId: string;
   let testLayerId: string;
@@ -505,7 +505,7 @@ if (skipIntegrationTests) {
   console.log('');
   console.log('1. Set up your Document Engine instance with layer support');
   console.log('2. Set DOCUMENT_ENGINE_BASE_URL environment variable');
-  console.log('3. Set DOCUMENT_ENGINE_AUTH_TOKEN environment variable');
+  console.log('3. Set DOCUMENT_ENGINE_API_AUTH_TOKEN environment variable');
   console.log('4. Run: pnpm test test/integration/layers.test.ts');
   console.log('');
   console.log('These tests verify that layer functionality works correctly across all MCP tools.');

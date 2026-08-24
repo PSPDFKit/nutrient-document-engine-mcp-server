@@ -17,6 +17,7 @@ import { healthCheck } from './tools/healthCheck.js';
 import { createDashboardRouter } from './dashboard/index.js';
 import { DocumentEngineClient } from './api/Client.js';
 import { getVersion } from './version.js';
+import { createMcpHttpAuthMiddleware } from './utils/HttpSecurity.js';
 
 dotenv.config();
 
@@ -109,8 +110,16 @@ function configureMCPServerTools(server: McpServer): void {
   }
 }
 
-function createExpressApp(enableDashboard: boolean = false): express.Application {
+function createExpressApp(
+  enableDashboard: boolean = false,
+  mcpHttpAuthToken?: string
+): express.Application {
   const app = express();
+
+  if (mcpHttpAuthToken) {
+    app.all('/mcp', createMcpHttpAuthMiddleware(mcpHttpAuthToken));
+  }
+
   app.use(express.json());
 
   const env = getEnvironment();
@@ -200,7 +209,7 @@ async function startStdioServer() {
 async function startHttpServer() {
   const env = getEnvironment();
   const dashboardEnabled = !!(env.DASHBOARD_USERNAME && env.DASHBOARD_PASSWORD);
-  const app = createExpressApp(dashboardEnabled);
+  const app = createExpressApp(dashboardEnabled, env.MCP_HTTP_AUTH_TOKEN);
 
   // Map to store transports by session ID
   const transports: { [sessionId: string]: StreamableHTTPServerTransport } = {};

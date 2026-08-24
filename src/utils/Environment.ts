@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { assertHttpTransportSecurity } from './HttpSecurity.js';
 
 // Environment variable schema
 const environmentSchema = z.object({
@@ -24,7 +25,8 @@ const environmentSchema = z.object({
   // MCP Transport configuration
   MCP_TRANSPORT: z.enum(['stdio', 'http']).default('stdio'),
   PORT: z.coerce.number().int().min(1).max(65535).default(5100),
-  MCP_HOST: z.string().default('localhost'),
+  MCP_HOST: z.string().default('127.0.0.1'),
+  MCP_HTTP_AUTH_TOKEN: z.string().optional(),
 
   // Dashboard configuration (optional - only enabled when both username and password are provided)
   DASHBOARD_USERNAME: z.string().optional(),
@@ -45,7 +47,9 @@ export type ParsedEnvironment = z.infer<typeof environmentSchema>;
  */
 export function validateEnvironment(): ParsedEnvironment {
   try {
-    return environmentSchema.parse(process.env);
+    const environment = environmentSchema.parse(process.env);
+    assertHttpTransportSecurity(environment);
+    return environment;
   } catch (error) {
     if (error instanceof z.ZodError) {
       const errorMessages = error.errors
