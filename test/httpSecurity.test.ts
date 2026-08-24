@@ -6,6 +6,7 @@ import {
   createMcpHttpAuthMiddleware,
   isLoopbackHost,
 } from '../src/utils/HttpSecurity.js';
+import { validateEnvironment } from '../src/utils/Environment.js';
 
 describe('HTTP transport security', () => {
   describe('isLoopbackHost', () => {
@@ -65,9 +66,9 @@ describe('HTTP transport security', () => {
   });
 
   describe('createMcpHttpAuthMiddleware', () => {
-    function createApp() {
+    function createApp(expectedToken = 'http-secret') {
       const app = express();
-      app.all('/mcp', createMcpHttpAuthMiddleware('http-secret'));
+      app.all('/mcp', createMcpHttpAuthMiddleware(expectedToken));
       app.all('/mcp', (_req, res) => res.sendStatus(204));
       app.get('/health', (_req, res) => res.sendStatus(204));
       return app;
@@ -92,6 +93,30 @@ describe('HTTP transport security', () => {
         .post('/mcp')
         .set('Authorization', 'Bearer http-secret')
         .expect(204);
+    });
+
+    it('allows the trimmed configured Bearer token', async () => {
+      const originalEnv = process.env;
+      process.env = {
+        MCP_TRANSPORT: 'http',
+        MCP_HOST: '0.0.0.0',
+        MCP_HTTP_AUTH_TOKEN: 'secret ',
+      };
+
+      try {
+        const expectedToken = validateEnvironment().MCP_HTTP_AUTH_TOKEN;
+        expect(expectedToken).toBe('secret');
+        if (!expectedToken) {
+          throw new Error('Expected MCP_HTTP_AUTH_TOKEN to be configured');
+        }
+
+        await request(createApp(expectedToken))
+          .post('/mcp')
+          .set('Authorization', 'Bearer secret')
+          .expect(204);
+      } finally {
+        process.env = originalEnv;
+      }
     });
 
     it.each(['get', 'post', 'delete'] as const)('protects %s /mcp', async method => {

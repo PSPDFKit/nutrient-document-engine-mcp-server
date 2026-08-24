@@ -168,6 +168,25 @@ describe('Environment Validation', () => {
       expect(validateEnvironment().MCP_HTTP_AUTH_TOKEN).toBe('http-secret');
     });
 
+    it('should trim MCP_HTTP_AUTH_TOKEN', () => {
+      process.env = {
+        MCP_TRANSPORT: 'http',
+        MCP_HOST: '0.0.0.0',
+        MCP_HTTP_AUTH_TOKEN: '  http-secret  ',
+      };
+
+      expect(validateEnvironment().MCP_HTTP_AUTH_TOKEN).toBe('http-secret');
+    });
+
+    it('should treat a whitespace-only MCP_HTTP_AUTH_TOKEN as absent', () => {
+      process.env = {
+        MCP_TRANSPORT: 'stdio',
+        MCP_HTTP_AUTH_TOKEN: '   ',
+      };
+
+      expect(validateEnvironment().MCP_HTTP_AUTH_TOKEN).toBeUndefined();
+    });
+
     it('should not require MCP_HTTP_AUTH_TOKEN for stdio transport', () => {
       process.env = {
         MCP_TRANSPORT: 'stdio',

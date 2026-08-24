@@ -26,7 +26,10 @@ const environmentSchema = z.object({
   MCP_TRANSPORT: z.enum(['stdio', 'http']).default('stdio'),
   PORT: z.coerce.number().int().min(1).max(65535).default(5100),
   MCP_HOST: z.string().default('127.0.0.1'),
-  MCP_HTTP_AUTH_TOKEN: z.string().optional(),
+  MCP_HTTP_AUTH_TOKEN: z
+    .string()
+    .optional()
+    .transform(token => token?.trim() || undefined),
 
   // Dashboard configuration (optional - only enabled when both username and password are provided)
   DASHBOARD_USERNAME: z.string().optional(),

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
+import './loadEnv.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
 import { hostHeaderValidation } from '@modelcontextprotocol/sdk/server/middleware/hostHeaderValidation.js';
-import dotenv from 'dotenv';
 import express from 'express';
 import { randomUUID } from 'node:crypto';
 import { isIP } from 'node:net';
@@ -18,8 +18,6 @@ import { createDashboardRouter } from './dashboard/index.js';
 import { DocumentEngineClient } from './api/Client.js';
 import { getVersion } from './version.js';
 import { createMcpHttpAuthMiddleware } from './utils/HttpSecurity.js';
-
-dotenv.config();
 
 // Validate environment variables at startup (skip in test environment)
 if (process.env.NODE_ENV !== 'test') {
