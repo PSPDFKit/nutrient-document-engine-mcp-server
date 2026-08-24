@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.PSPDFKit/nutrient-document-engine-mcp-server",
   "title": "Nutrient Document Engine MCP Server",
-  "description": "Self-hosted MCP server for Nutrient Document Engine: on-premises document processing with natural-language control, designed for HIPAA, SOC 2, and GDPR compliance.",
+  "description": "MCP server for self-hosted Nutrient Document Engine: extract, edit, redact, and annotate documents.",
   "version": "0.0.3",
   "repository": {
     "url": "https://github.com/PSPDFKit/nutrient-document-engine-mcp-server",
@@ -48,13 +48,6 @@
         {
           "name": "LOG_LEVEL",
           "description": "Optional log level (default info).",
-          "isRequired": false,
-          "isSecret": false,
-          "format": "string"
-        },
-        {
-          "name": "MCP_TRANSPORT",
-          "description": "Optional transport, stdio (default) or http; http binds loopback unless configured otherwise.",
           "isRequired": false,
           "isSecret": false,
           "format": "string"
