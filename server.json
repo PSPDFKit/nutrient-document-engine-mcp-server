@@ -1,0 +1,58 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.PSPDFKit/nutrient-document-engine-mcp-server",
+  "title": "Nutrient Document Engine MCP Server",
+  "description": "MCP server for self-hosted Nutrient Document Engine: extract, edit, redact, and annotate documents.",
+  "version": "0.0.3",
+  "repository": {
+    "url": "https://github.com/PSPDFKit/nutrient-document-engine-mcp-server",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@nutrient-sdk/document-engine-mcp-server",
+      "version": "0.0.3",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "DOCUMENT_ENGINE_BASE_URL",
+          "description": "Base URL of your Nutrient Document Engine instance (e.g. http://localhost:5000).",
+          "isRequired": true,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "DOCUMENT_ENGINE_API_AUTH_TOKEN",
+          "description": "API auth token for your Document Engine instance.",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "DASHBOARD_USERNAME",
+          "description": "Optional: enables the local status dashboard (Basic auth username).",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "DASHBOARD_PASSWORD",
+          "description": "Optional: local status dashboard password.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "description": "Optional log level (default info).",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
