@@ -30,6 +30,7 @@
   ],
   "scripts": {
     "build": "tsc && shx chmod +x dist/index.js",
+    "prepublishOnly": "npm run build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "pretest": "tsc --project tsconfig.test.json --noEmit",
