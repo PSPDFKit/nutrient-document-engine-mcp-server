@@ -87,6 +87,25 @@ Add this to your Claude Desktop config (Settings → Developer → Edit Config):
 3. Switch back to Claude Desktop and ask questions like:
    *"List my documents and extract text from the contract"*
 
+## HTTP Transport Security
+
+The optional HTTP transport binds to `127.0.0.1` by default. A non-loopback `MCP_HOST` requires
+`MCP_HTTP_AUTH_TOKEN`; the server refuses to start without a nonempty token. Clients must send the
+token on every `/mcp` request as `Authorization: Bearer <token>`. If a token is set for a loopback
+HTTP server, `/mcp` requires it there too. This token does not protect `/health` or `/dashboard`;
+dashboard access uses `DASHBOARD_USERNAME` and `DASHBOARD_PASSWORD`.
+
+```bash
+# Local-only HTTP transport; no MCP bearer token required.
+MCP_TRANSPORT=http npx @nutrient-sdk/document-engine-mcp-server
+
+# Network-accessible HTTP transport; bearer authentication is required.
+MCP_TRANSPORT=http MCP_HOST=0.0.0.0 MCP_HTTP_AUTH_TOKEN=replace-with-a-secret \
+  npx @nutrient-sdk/document-engine-mcp-server
+```
+
+The default stdio transport is unchanged and never requires `MCP_HTTP_AUTH_TOKEN`.
+
 ## Features
 
 This MCP server provides document processing tools in these areas:
