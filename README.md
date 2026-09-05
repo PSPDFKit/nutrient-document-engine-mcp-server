@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/pspdfkit-nutrient-document-engine-mcp-server-badge.png)](https://mseep.ai/app/pspdfkit-nutrient-document-engine-mcp-server)
+
 # Nutrient Document Engine MCP Server
 
 ![Document workflows using natural language](https://raw.githubusercontent.com/PSPDFKit/nutrient-document-engine-mcp-server/main/resources/readme-header.png)
