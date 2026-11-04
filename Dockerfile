@@ -1,16 +1,16 @@
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:24.22.1-alpine AS builder
 
 # Install pnpm
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.30.3
 
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 
 # Install dependencies
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 # Copy source files
 COPY . .
@@ -19,10 +19,10 @@ COPY . .
 RUN pnpm build
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:24.22.1-alpine AS production
 
 # Install pnpm
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.30.3
 
 # Create a non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
@@ -30,10 +30,10 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 
 # Install production dependencies only
-RUN pnpm install --prod
+RUN pnpm install --prod --frozen-lockfile
 
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
