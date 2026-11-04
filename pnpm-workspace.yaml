@@ -1,11 +1,5 @@
-minimumReleaseAge: 10080
-
-allowBuilds:
-  esbuild: false
-
 supportedArchitectures:
   os:
-    - current
     - win32
     - darwin
   cpu:

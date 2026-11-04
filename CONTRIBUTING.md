@@ -25,7 +25,7 @@ We welcome contributions to the Nutrient Document Engine MCP Server! This docume
 
 ### Prerequisites
 
-- Node.js 22.23.4+ on the 22.x line, 24.22.1+ on the 24.x line, or 26.12.1 and later
+- Node.js >= 22.0.0
 - pnpm >= 9.10.0
 - Document Engine instance (for integration testing and examples)
 
