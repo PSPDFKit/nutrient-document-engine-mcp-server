@@ -2,7 +2,7 @@
 FROM node:24.22.1-alpine AS builder
 
 # Install pnpm
-RUN npm install -g pnpm@10.30.3
+RUN npm install -g pnpm@10
 
 WORKDIR /app
 
@@ -22,7 +22,7 @@ RUN pnpm build
 FROM node:24.22.1-alpine AS production
 
 # Install pnpm
-RUN npm install -g pnpm@10.30.3
+RUN npm install -g pnpm@10
 
 # Create a non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
