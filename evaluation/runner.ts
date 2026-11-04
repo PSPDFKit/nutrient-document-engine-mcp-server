@@ -6,10 +6,9 @@ import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { BaseLanguageModel } from '@langchain/core/language_models/base';
 import { ChatOpenAI } from '@langchain/openai';
 import { DynamicStructuredTool } from '@langchain/core/tools';
-import { JsonSchema7Type, toJsonSchema } from '@langchain/core/utils/json_schema';
 import { mcpToolsToRegister } from '../src/mcpTools.js';
 import { getDocumentEngineClient } from '../src/api/ClientFactory.js';
-import { z } from 'zod';
+import { z, ZodRawShape } from 'zod';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { FocusedEvaluationResults, ToolUsageResult } from './types.js';
@@ -18,8 +17,6 @@ import { ToolUsageEvaluator } from './evaluator.js';
 import { EvaluationReporter } from './reporter.js';
 import { DocumentEngineClient } from '../src/api/Client.js';
 import { createDocumentLayer } from '../src/api/DocumentLayerAbstraction.js';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { getVersion } from '../src/version.js';
 
 /**
  * Test document configuration
@@ -206,20 +203,13 @@ export class FocusedEvaluationRunner {
     llm: BaseLanguageModel
   ): Promise<FocusedEvaluationResults> {
     const startTime = Date.now();
-    const server = new McpServer({ name: 'document-engine-mcp-evaluation', version: getVersion() });
 
     // Create tools
     const tools = mcpToolsToRegister.map(tool => {
-      const schema = z.object(tool.schema);
-      return new DynamicStructuredTool<
-        JsonSchema7Type,
-        Record<string, unknown>,
-        Record<string, unknown>,
-        string
-      >({
+      return new DynamicStructuredTool({
         name: tool.name,
         description: `Document processing tool: ${tool.name}`,
-        schema: toJsonSchema(schema),
+        schema: z.object(tool.schema as ZodRawShape),
         func: async args => {
           if (!this.client) {
             throw new Error('Please run initialize() first');
@@ -227,25 +217,21 @@ export class FocusedEvaluationRunner {
 
           try {
             const result = await tool.handler(
-              server,
               this.client,
-              schema.parse(args),
+              args,
               // Mock the request extras.
               {
                 signal: new AbortController().signal,
-                sendNotification: () => {
+                sendNotification: _ => {
                   return Promise.resolve();
                 },
-                sendRequest: async () => {
-                  throw new Error('Client requests are not supported during evaluation');
+                sendRequest: _ => {
+                  return Promise.resolve(args);
                 },
                 requestId: '',
               }
             );
-            return (
-              result.content.find(content => content.type === 'text')?.text ||
-              'Operation completed successfully'
-            );
+            return result.content?.[0]?.text || 'Operation completed successfully';
           } catch (error) {
             return `Error: ${error}`;
           }

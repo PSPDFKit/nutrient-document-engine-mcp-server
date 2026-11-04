@@ -51,13 +51,13 @@ export const TOOL_USAGE_SCENARIOS: ToolUsageScenario[] = [
   {
     id: 'list-recent-with-count',
     description: 'List recent documents with remaining count',
-    query: 'Show me the 10 most recently created documents and tell me how many more there are',
+    query: 'Show me the 10 most recently updated documents and tell me how many more there are',
     expectedTools: ['list_documents'],
     maxToolCalls: 1,
     expectedParameters: {
       list_documents: {
         limit: 10,
-        sort_by: 'created_at',
+        sort_by: 'updated_at',
         sort_order: 'desc',
         count_remaining: true,
       },
@@ -1193,14 +1193,14 @@ export const TOOL_USAGE_SCENARIOS: ToolUsageScenario[] = [
     id: 'list-with-multiple-filters',
     description: 'List with multiple filters',
     query:
-      'Find the first 8 documents with "invoice" in the title, sorted by most recently created, and tell me how many more exist',
+      'Find the first 8 documents with "invoice" in the title, sorted by most recently updated, and tell me how many more exist',
     expectedTools: ['list_documents'],
     maxToolCalls: 1,
     expectedParameters: {
       list_documents: {
         limit: 8,
         title: 'invoice',
-        sort_by: 'created_at',
+        sort_by: 'updated_at',
         sort_order: 'desc',
         count_remaining: true,
       },
