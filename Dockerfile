@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:24.22.1-alpine AS builder
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -7,7 +7,7 @@ RUN npm install -g pnpm
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install dependencies
 RUN pnpm install
@@ -19,7 +19,7 @@ COPY . .
 RUN pnpm build
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:24.22.1-alpine AS production
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -30,7 +30,7 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install production dependencies only
 RUN pnpm install --prod
