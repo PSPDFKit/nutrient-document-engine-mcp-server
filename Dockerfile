@@ -2,12 +2,12 @@
 FROM node:24.22.1-alpine AS builder
 
 # Install pnpm
-RUN npm install -g pnpm@10
+RUN npm install -g pnpm
 
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile
@@ -22,7 +22,7 @@ RUN pnpm build
 FROM node:24.22.1-alpine AS production
 
 # Install pnpm
-RUN npm install -g pnpm@10
+RUN npm install -g pnpm
 
 # Create a non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
@@ -30,7 +30,7 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install production dependencies only
 RUN pnpm install --prod --frozen-lockfile
