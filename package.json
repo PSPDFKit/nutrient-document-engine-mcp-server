@@ -19,7 +19,7 @@
     "document-engine"
   ],
   "engines": {
-    "node": ">=24.22.1",
+    "node": ">=24.22.1 <25",
     "pnpm": ">=9.10.0"
   },
   "type": "module",

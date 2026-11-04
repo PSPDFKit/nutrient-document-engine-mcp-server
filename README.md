@@ -43,7 +43,7 @@ Once configured, you (or your agent) can interact with documents through natural
 ### Prerequisites
 - **Claude Desktop** - [Download from Anthropic](https://claude.ai/download).
 - **Docker Compose** - [Download from Docker](https://docs.docker.com/compose/). For running Nutrient Document Engine locally.
-- **Node.js 24.22.1+** - This MCP server runs via `npx`.
+- **Node.js 24.x, version 24.22.1 or later** - This MCP server runs via `npx`.
 
 ### Licensing
 
